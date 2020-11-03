@@ -1,0 +1,10 @@
+*.pyc
+venv
+data_to_prep
+*.org
+*analysis*
+*archived_files*
+data
+Data
+india.csv
+
