@@ -14,15 +14,17 @@ class UrlsSpider(CrawlSpider):
     #tag = 'north-east'
     #tag = 'west-bengal'
     tag = 'india'
+    cwd = os.getcwd().split('/')
+    user_dir = '/'.join(cwd[:3]) 
     try:
         
-        downloaded_articles = pd.read_csv('/home/ranu/learning/scrapy-tutorials/telegraph/india.csv')
+        downloaded_articles = pd.read_csv(f'{user_dir}/learning/scrapy-tutorials/telegraph/india.csv')
         downloaded_articles = downloaded_articles.article_url.tolist()
         print(f'The length of the urls downloaded is {len(downloaded_articles)}')
     except Exception as e:
         downloaded_articles = []
     start_urls = [f'https://www.telegraphindia.com/{tag}']
-    root_dir = f'~/repos/newspaper-crawling/telegraph/data/{tag}/'
+    root_dir = f'{user_dir}/repos/newspaper-crawling/telegraph/data/{tag}/'
     rules = (
         Rule(LinkExtractor(allow=f'{tag}'), callback='parse_item', follow=True),
     )
