@@ -17,7 +17,6 @@ class CrawlerSpider(CrawlSpider):
     root_dir = f'{user_dir}/repos/newspaper-crawling/organiser_magazine/data/{tag}/'
 
     try:
-        
         downloaded_articles = pd.read_csv(f'{user_dir}/repos/newspaper-crawling/organiser_magazine/data/organiser_content.csv')
         downloaded_articles = downloaded_articles.article_url.tolist()
         print(f'The length of the urls downloaded is {len(downloaded_articles)}')
