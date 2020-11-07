@@ -18,12 +18,12 @@ class UrlsSpider(CrawlSpider):
     user_dir = '/'.join(cwd[:3]) 
     try:
         
-        downloaded_articles = pd.read_csv(f'{user_dir}/learning/scrapy-tutorials/telegraph/india.csv')
-        downloaded_articles = downloaded_articles.article_url.tolist()
+        df = pd.read_csv('/home/ranu/repos/newspaper-crawling/telegraph-India/data/urls.csv')
+        downloaded_articles = df.url.unique().tolist()
         print(f'The length of the urls downloaded is {len(downloaded_articles)}')
     except Exception as e:
         downloaded_articles = []
-    start_urls = [f'https://www.telegraphindia.com/{tag}']
+    start_urls = downloaded_articles
     root_dir = f'{user_dir}/repos/newspaper-crawling/telegraph/data/{tag}/'
     rules = (
         Rule(LinkExtractor(allow=f'{tag}'), callback='parse_item', follow=True),
