@@ -8,7 +8,7 @@ class FromUrlsSpider(scrapy.Spider):
     name = 'from_urls'
     allowed_domains = ['www.telegraphindia.com']
 
-    df = pd.read_parquet('/home/ranu/repos/newspaper-crawling/telegraph-India/data/india.parquet')
+    df = pd.read_parquet('/home/ranu/repos/newspaper-crawling/data/india.parquet')
     urls_list = df.article_url.unique().tolist()
     start_urls = urls_list
     
@@ -16,7 +16,16 @@ class FromUrlsSpider(scrapy.Spider):
         url = response.url
         full_url = response.urljoin(url)
         news = newspaper(full_url)
-            #dataframe = pd.DataFrame.from_dict(news.get_dict, orient='index')
-            ##dataframe = dataframe.transpose()
+        
+        dict_to_return = news.get_dict
+        all_paras = []
 
-        yield news.get_dict
+        for i in response.xpath("//div[@class='fs-17 pt-2 noto-regular']/p"):
+            para = i.xpath(".//text()").get()
+            all_paras.append(para)
+        
+        full_text = ' \n'.join(all_paras)
+        
+        dict_to_return['text_by_para'] = full_text
+        
+        yield dict_to_return
