@@ -2,15 +2,19 @@
 import scrapy
 import pandas as pd 
 from newsfetch.news import newspaper
+from glob import glob
 
 
 class FromUrlsSpider(scrapy.Spider):
     name = 'from_urls'
     allowed_domains = ['www.telegraphindia.com']
 
-    df = pd.read_parquet('/home/ranu/repos/newspaper-crawling/data/india.parquet')
-    urls_list = df.article_url.unique().tolist()
-    start_urls = urls_list
+    #df = pd.read_parquet('/home/ranu/repos/newspaper-crawling/data/india.parquet')
+    #urls_list = df.article_url.unique().tolist()
+    all_html = glob('/home/ranu/learning/scrapy-tutorials/telegraph/data/india/*/*.html')
+    all_html = [('file://' + i) for i in all_html]
+
+    start_urls = all_html
     
     def parse(self,response):
         url = response.url
